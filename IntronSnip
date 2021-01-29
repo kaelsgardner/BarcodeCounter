@@ -1,0 +1,17 @@
+import sys
+
+var1 = sys.argv[1] #Your program will accept two command line arguments: a DNA   sequence which consists of two exons separated by an intron, and the position in the sequence where the first exon ends, followed by a comma, followed by the position in the sequence where the second exon starts. The goal is to remove the intron and just put the two exons together. Hint: convert the exon end and start positions into a list to parse the numbers.
+var2 = sys.argv[2]
+
+
+var1 = var1.upper()
+
+pos1 = int(var2[0])
+pos2 = int(var2[2])
+
+pos2 = pos2 - 1
+
+newvar1 = var1[0:pos1]
+newvar1 = newvar1 + (var1[pos2:])
+
+print(newvar1)
