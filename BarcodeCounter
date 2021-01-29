@@ -1,0 +1,41 @@
+#!/usr/bin/python3
+
+#What is the length of the barcode (how many bases)?
+bc_length = 10 #Type the length after the equal sign without quotation marks
+
+
+#-----------------------------------------------------------------------------
+import sys
+infile = sys.argv[1]#FASTQ file
+outfile = sys.argv[2]#csv file
+
+bc_counts = {}#dictionary of barcode and counts
+bc_list = []
+original_num = 75 #original frequency of the barcode
+linenum  = 1
+with open (infile) as readfile, open (outfile, "w") as writefile:
+        for line in readfile:
+                if ((linenum - 2) % 4) == 0:#four lines per sequence, find every line#2
+
+                        bc_start = 0
+                        bc_stop = bc_start + bc_length
+                        barcode = line[bc_start : bc_stop]#find barcode
+                        bc_list.append(barcode)
+                        linenum += 1
+                else:
+                        linenum += 1
+        i = 0
+        while i < len(bc_list):
+                if bc_list[i] in bc_counts:
+                        bc_counts[bc_list[i]] += 1#count up barcodes
+                        i += 1
+                else:
+                        bc_counts[bc_list[i]] = 1#add new item to dictionary
+                        i += 1
+        writefile.write("Barcode,Frequency,Percent\n")
+        bc_index = 0
+        for k, v in bc_counts.items():
+                percent = int(v) / original_num * 100
+                formatted_line = str(k) + "," + str(v) + "," + str(percent) + "\n"
+                writefile.write(formatted_line)#write to new file
+                i += 1
